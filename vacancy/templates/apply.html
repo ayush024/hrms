@@ -1,0 +1,13 @@
+{% load staticfiles %}
+<html>
+<head>
+	<title>Apply</title>
+</head>
+<body>
+You are applying for {{jobs.title}}
+<form action="{% url 'apply' jobs.id %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_ul }}
+    <input type="submit" value="Submit">
+</form>
+</body>

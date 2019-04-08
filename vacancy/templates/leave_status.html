@@ -1,0 +1,17 @@
+{% if no_response_yet %}
+<h2>{{user.username}}</h2>
+<p>Leave taken: {{user.leave_taken}}</p>
+<p>Leave requested from {{leave.startDate}} to {{leave.endDate}}</p>
+<p>Reasons for leave: {{leave.reason}}
+<form method="POST" >
+	{% csrf_token %}
+	<input type="submit" formaction="{% url 'leave_verify' user.id 1 %}" class="btn btn-default" value="Accept"><input type="submit" formaction="{% url 'leave_verify' user.id 0 %}" class="btn btn-default" value="Reject">
+	
+</form>
+{% else %}
+	{% if positive_response %}
+		<p>Congrats, your leave reqeust from {{leave.startDate}} to {{leave.endDate}} has been approved.</p>
+	{% elif negative_response %}
+		<p>Sorry, we couldn't accept your leave request from {{leave.startDate}} to {{leave.endDate}}.</p>
+	{% endif %}
+{% endif %}

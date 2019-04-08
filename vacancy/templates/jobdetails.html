@@ -1,0 +1,181 @@
+{% load staticfiles %}
+<!DOCTYPE html land="en" >
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Home | Marigold Overseas PVT. LTD</title>
+		<link rel="shortcut icon" href="{% static 'image/logo/favicon.png'%}" type="image/png">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/style.css'%}">
+		<link rel="stylesheet" href="{% static 'css/animate.css'%}">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script
+  			src="https://code.jquery.com/jquery-3.3.1.js"
+  			integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  			crossorigin="anonymous">
+		</script>
+		<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+		<style>
+			*{
+   			 	margin:0px;
+    			padding:0px;
+ 			 }
+		</style>	
+	</head>
+	<body>
+		<div id="headerDesktop" class="wow fadeInDown text-uppercase">
+			<div class="main-logo">
+				<a href="index.html"><img src="{% static 'image/logo/main-logo.png' %}" alt="main logo"/></a>
+			</div>
+			<ul class="nav-menuDesktop">
+				<div class="home-logo"><a href="index.html"><img src="{% static 'image/logo/home-logo.png' %}" alt="home logo"/></a></div>
+				<li><a href="#company-profile.html">Company Profile</a>
+					<ul class="drop-menu">
+            			<li><a href = "introduction.html">Introduction</a></li>
+            			<li><a href = "message-form-chairman.html">Message From Chairman</a></li>
+            			<li><a href = "organization-chart.html">Organization Chart</a></li>
+          			</ul>
+				</li>
+				<li><a href="#for-employees.html">For Employees</a>
+				<ul class="drop-menu">
+            		<li><a href = "why-marigold.html">Why Marigold</a></li>
+            		<li><a href = "our-recruitment.html">Our Recruitment</a></li>
+            		<li><a href = "sector-we-supply.html">Sector We Supply</a></li>
+            		<li><a href = "sample-of-required-document.html">Required Document</a></li>
+          		</ul>
+				</li>
+				<li><a href="about-us.html">About US</a></li>
+				<li><a href="contact-us.html">Contact US</a></li>
+			</ul>	
+		</div>
+		<div id="headerMobile" class="text-uppercase">
+			<div class="main-mobile-logo">
+				<a href="index.html"><img src="{% static 'image/logo/main-logo.png' %}" alt="main logo"/></a></div>
+			<div id="menu-toggler" class="text-capitalize">Menu</div>
+			<ul class="mobile-menu">
+				<li><a href="index.html">Home</a></li>
+				<li><a href="#company-profile.html">Company Profile</a>
+					<ul class="mobile-drop">
+            			<li><a href = "introduction.html">Introduction</a></li>
+            			<li><a href = "message-form-chairman.html">Message From Chairman</a></li>
+            			<li><a href = "organization-chart.html">Organization Chart</a></li>
+          			</ul>
+				</li>
+				<li><a href="#for-employees.html">For Employees</a>
+				<ul class="mobile-drop">
+            		<li><a href = "why-marigold.html">Why Marigold</a></li>
+            		<li><a href = "our-recruitment.html">Our Recruitment</a></li>
+            		<li><a href = "sector-we-supply.html">Sector We Supply</a></li>
+            		<li><a href = "sample-of-required document.html">Required Document</a></li>
+          		</ul>
+				</li>
+				<li><a href="about-us.html">About US</a></li>
+				<li><a href="contact-us.html">Contact US</a></li>
+			</ul>	
+		</div><br><br><br><br><strong><h1 align='center' style='color:red; background-color: black'> Apply for Jobs </h1></strong>
+		 <div class="row">
+          
+        <div class="col-lg-6" style='padding-left: 80px'> 
+          
+            <img src="{{jobs.image.url}}" alt="" height="800px">
+          </div>
+          <div class="col-lg-6" >
+            
+              <h2 >
+               <b style='color:blue'> Designation : {{jobs.title}}</b>
+              </h2>
+              <p><b>Location :</b> {{jobs.location}}<br><b> Salary : {{jobs.salary}} </b>NPR
+                <br>
+                <b>Qualifications: </b>{{jobs.qualifications}} <br> <b>Listed Date : </b>{{jobs.listed_date}} <br> <b>Deadline for Apply :</b> {{jobs.last_date}} <br> <b>Duty Period : </b>{{jobs.time_period}} months<br>
+                <b>Fooding : </b>{% if jobs.fooding == 0 %}
+                                                     Not Provided
+                                                    {% elif jobs.fooding == 1 %}
+                                                      Provided
+                                                    {% else %}
+                                                      will be determined by Company
+                                                    {% endif %}
+                <br>
+               <b> Lodging : </b> {% if jobs.lodging == 0 %}
+                                                     Not Provided
+                                                    {% elif jobs.lodging == 1 %}
+                                                      Provided
+                                                    {% else %}
+                                                      will be determined by Company
+                                                    {% endif %}
+                <br>
+                <b>Insurance : </b> {% if jobs.insurance == 0 %}
+                                                     Not Provided
+                                                    {% elif jobs.lodging == 1 %}
+                                                      Provided
+                                                    {% else %}
+                                                      will be determined by Company
+                                                    {% endif %}
+              	</p>
+                
+            </div>
+            <div class="col-md-6">
+                <form method="POST">
+                    <h3> In order to apply for this job, please input your  details </h3><br>
+                    Name :-  <input type="text" name="Name"/>
+                    <br><br>
+                    Address :- <input type="text" name="Address"/>
+                    <br><br>
+                    Phone No. :- <input type="number" name="Phone no"/>
+                    <br><br>
+                    Passport No :- <input type="text" name="Citizenship"/>
+                    <br><br>
+                    Upload your CV<input type='file' name="file"/> 
+                    <br><br>
+                    <p><input class='btn btn-danger' type='submit' name="submit"/> </p>
+                </form>
+        </div>
+          </div>
+        </div>
+        
+              
+      </div>
+			<footer id="footerDesktop">
+              <div id="section-1">
+                <h3 ><span style="color: #3399cc">Marigold</span> Overseas</h3>
+                <span>"We believe in hard work"</span>
+              </div>
+              <div id="section-2">
+                <span>&copy; Copyright 2018 | Marigold Overseas</span>
+              </div>
+              <div id="section-3">
+         		<h3>Contact Us</h3>
+             	<div class="footer-img"><img src="{% static 'image/logo/location tag.png' %}" alt="location logo" /></div>
+                <span class="footer-text"> Sinamangal-9, Airport Kathmandu</span>
+               	<br/>
+               	<div class="footer-img"><img src="{% static 'image/logo/mail.png' %}" alt="mail logo" /></div>
+                <span class="footer-text">info@marigoldoverseas.com.np</span>
+                <br/>
+                <div class="footer-img"><img src="{% static 'image/logo/phone.png' %}" alt="phone logo" /></div>
+                <span class="footer-text"> +977- 14499122, 448281, 4485281</span>
+              </div>
+          </footer>
+      		<footer id="footerMobile">
+            	<div id="mobileSection-1">
+                	<h5 ><span style="color: #3399cc">Marigold</span> Overseas</h5>
+                 	<span class="footer-text">"We believe in hard work"</span>
+            	</div>
+           	 	<div id="mobileSection-2"><span>&copy; Copyright 2018 | Marigold Overseas</span></div>
+              	<div id="mobileSection-3">
+                	<h5>Contact Us</h5>
+                	<div class="footer-img"><img src="{% static 'image/logo/location tag.png' %}" alt="location logo" /></div>
+               		<span class="footer-text">Sinamangal-9, Airport Kathmandu</span>
+                	<br/>
+                	<div class="footer-img"><img src="{% static 'image/logo/mail.png' %}" alt="mail logo" /></div>
+				  	<span class="footer-text" >info@marigoldoverseas.com.np</span><br/>
+                	<div class="footer-img"><img src="{% static 'image/logo/phone.png' %}" alt="phone logo" /></div>
+                	<span class="footer-text"> +977-14499122, 448281, 4485281</span>
+             	</div>
+          	</footer>
+   		</div>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script src="{% static 'js/wow.min.js' %}"></script>
+        <script>
+			new WOW().init();
+        </script>
+	</body>
+</html>

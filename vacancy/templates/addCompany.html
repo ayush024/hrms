@@ -1,0 +1,10 @@
+{% if user.is_staff %}
+<h3>Add new company</h3>
+<form method="POST" action="">
+	{% csrf_token %}
+	{{form.as_p}}
+	<input type="submit" value="Add Company">
+</form>
+{% else %}
+<p>You require a staff account to access this form.</p>
+{% endif %}

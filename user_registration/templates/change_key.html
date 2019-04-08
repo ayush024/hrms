@@ -1,0 +1,12 @@
+<form method="post" action="{% url 'change_key' user.id %}">
+	{% csrf_token %}
+	<label> Current Key</label>
+	<input type="text" value="{{current_key.key}}" readonly"><br>
+	<label> Enter New Key</label>
+	<input type="text" value="" name="key"><br>
+	<label>Or generate a random one</label>
+	<input type="submit" formaction="{% url 'generate' %}" value="Generate"><br>
+
+	<input type="submit" value="Confirm">
+</form>
+

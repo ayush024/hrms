@@ -1,0 +1,48 @@
+{% load pending %}
+{% if user.is_staff %}
+	{% if clients %}
+		{% for client in clients %}
+			<img src='{{client.clientimage.url}}' style="width:100; height:100;">
+			<p><strong>Applied by:		{{client.client_name}}</strong></p>
+			<p>Date of birth:  {{client.DOB}}</p>
+			<p>Applied job:	   {{client.appliedjob}}</p>
+			<p>Passport no:	   {{client.passport_no}}</p>
+			<p>Citizenship:	   {{client.Citizenship}}
+			<p>Referred by:    {{client.Ref}}</p>
+
+			<a href="{% url 'specific_app' client.id %}"><button>Show full info</button></a><br><br>
+
+<!--			<form method="POST">
+				{% csrf_token %}	
+				<input type="submit" action="{% url 'process' client.id 1 %}" value="Proceed">
+				<input type="submit" action="{% url 'process' client.id 0 %}" value="Reject">
+			</form>   -->
+		{% endfor %}
+	{% elif client %}
+		<img src='{{client.clientimage.url}}' style="width:200; height:200;">
+		<p>Name:	       {{client.client_name}}</p>
+		<p>Date of birth:  {{client.DOB}}</p>
+		<p>Father's name:	{{client.father_name}}</p>
+		<p>Applied job:	   {{client.appliedjob}}</p>
+		<p>Passport no:	   {{client.passport_no}}</p>
+		<p>Date of issue:	{{client.DOI}}
+		<p>Date of expiry:	{{client.DOE}}	
+		<p>Citizenship:	   {{client.Citizenship}}</p>
+		<p>State:	{{client.state}}</p>
+
+		<p>Permanent Address: {{client.perm_address}}
+		<p>Contact number: {{client.Contact}}
+		<p>Referred by:    {{client.Ref}}</p>
+		<form method="POST">
+			{% csrf_token %}
+
+			<input type="submit" formaction="{% url 'process' client.id 1 %}" class="btn btn-default" {% if client|pending %}	value="Proceed"> {% else %} value="Accept"> {% endif %}
+			<input type="submit" formaction="{% url 'process' client.id 0 %}" class="btn btn-default" value="Reject">	
+		</form>
+
+	{% else %}
+	Sorry, no clients to show.
+	{% endif %}
+{% else %}
+<p> You are not authorized to use this section. </p>
+{% endif %}

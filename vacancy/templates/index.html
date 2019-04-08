@@ -1,0 +1,297 @@
+{% load staticfiles %}
+<!DOCTYPE html land="en" >
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Home | Marigold Overseas PVT. LTD</title>
+		<link rel="shortcut icon" href="{% static 'image/logo/favicon.png'%}" type="image/png">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/style.css'%}">
+		<link rel="stylesheet" href="{% static 'css/animate.css'%}">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script
+  			src="https://code.jquery.com/jquery-3.3.1.js"
+  			integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  			crossorigin="anonymous">
+		</script>
+		<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+		<style>
+			*{
+   			 	margin:0px;
+    			padding:0px;
+ 			 }
+		</style>	
+	</head>
+	<body>
+		<div id="headerDesktop" class="wow fadeInDown text-uppercase">
+			<div class="main-logo">
+				<a href="{% url 'home' %}"><img src="{% static 'image/logo/main-logo.png' %}" alt="main logo"/></a>
+			</div>
+			<ul class="nav-menuDesktop">
+				<div class="home-logo"><a href="index.html"><img src="{% static 'image/logo/home-logo.png' %}" alt="home logo"/></a></div>
+				<li><a href="#company-profile.html">Company Profile</a>
+					<ul class="drop-menu">
+            			<li><a href = "introduction">Introduction</a></li>
+            			<li><a href = "message">Message From Chairman</a></li>
+            			<li><a href = "chart">Organization Chart</a></li>
+          				
+            		<li><a href = "whymarigold">Why Marigold</a></li>
+            		<li><a href = "ourrecruitment">Our Recruitment</a></li>
+            		<li><a href = "sector">Sector We Supply</a></li>
+            		<li><a href = "sample">Required Document</a></li>
+          			</ul>
+				</li>
+				{% if user.is_staff and not user.is_superuser %}
+				<li><a href="#for-employees.html">For Employees</a>
+				<ul class="drop-menu">
+					<li><a href="{% url 'leave' user.id %}">Request leave </a></li>
+					<li><a href="{% url 'addCompany' %}">Add new company</a></li>
+					<li><a href="{% url 'postjob' %}">Post new job</a></li>
+					<li><a href="{% url 'all_app' 'pending' %}">Review pending applications</a></li>
+					<li><a href="{% url 'all_app' 'processing' %}">Review processing applications</a></li>
+          		</ul>
+				</li>
+				{% endif %}
+				{% if user.is_staff %}
+				<li><a href="#">Notifications</a>
+					<ul class="drop-menu">
+						{% if user.notifications.unread %}
+						{% for notification in user.notifications.unread %}
+							<li><a href="{% url 'leave_status' notification.actor.id %}">Leave request from {{notification.actor.username}}</a></li>
+						{% endfor %}
+						{% else %}
+							<li>No new notification</li>
+						{% endif %}	
+					</ul>
+				</li>
+				{% endif %}
+				<li><a href="jobs">Jobs</a></li>
+				<li><a href="#for-employees.html">More</a>
+				<ul class="drop-menu">
+					
+					<li><a href="contact.html">Contact US</a></li>
+					<li><a href="about.html">About US</a></li>
+				</ul>
+			</li>
+				{% if user.is_authenticated %}
+				<li><a href="{% url 'logout' %}">Logout</a></li>
+				{% else %}
+				<li><a href="{% url 'login' %}">Login</a></li>
+				<li><a href="{% url 'signup' %}">Signup</a></li>
+				{% endif %}
+			</ul>	
+		</div>
+		<div id="headerMobile" class="text-uppercase">
+			<div class="main-mobile-logo">
+				<a href="index.html"><img src="{% static 'image/logo/main-logo.png' %}" alt="main logo"/></a></div>
+			<div id="menu-toggler" class="text-capitalize">Menu</div>
+			<ul class="mobile-menu">
+				<li><a href="index.html">Home</a></li>
+				<li><a href="#company-profile.html">Company Profile</a>
+					<ul class="mobile-drop">
+            			<li><a href = "introduction">Introduction</a></li>
+            			<li><a href = "message">Message From Chairman</a></li>
+            			<li><a href = "chart">Organization Chart</a></li>
+            			<li><a href = "whymarigold">Why Marigold</a></li>
+            			<li><a href = "ourrecruitment">Our Recruitment</a></li>
+            			<li><a href = "sector">Sector We Supply</a></li>
+            			<li><a href = "sample">Required Document</a></li>
+          			</ul>
+				</li>
+				{% if user.is_staff and not user.is_superuser %} 
+				<li><a href="#for-employees.html">For Employees</a>
+				<ul class="mobile-drop">
+					<li><a href="{% url 'leave' user.id %}">Request Leave</a></li>
+					<li><a href="{% url 'addCompany' %}">Add new company</a></li>
+					<li><a href="{% url 'postjob' %}">Post new job</a></li>
+         		</ul>
+				</li>
+				{% endif %}
+				<li><a href="#applications.html">Applications</a>
+				<ul class="mobile-drop">
+					{% if user.is_staff %}
+					<li><a href="{% url 'all_app' 'pending' %}">Review pending applications</a></li>
+					<li><a href="{% url 'all_app' 'processing' %}">Review processing applications</a></li>
+					{% endif %}
+					<li><a href="{% url 'appstatus' %}">Check application status</a></li>
+				</ul>
+				</li>	
+				
+				<li><a href="jobs">Jobs</a></li>
+				<li><a href="about">About</a></li>
+				<li><a href="contact">Contact</a></li>
+													
+				{% if user.is_staff %}
+				<li><a href="#">Notifications</a>
+					<ul class="drop-menu">
+						{% if user.notifications.unread %}
+						{% for notification in user.notifications.unread %}
+							<li><a href="{% url 'leave_status' notification.id %}">
+								{% if user.is_superuser %}Leave request from {{notification.actor.username}}
+								{% else %}
+								Leave request processed.
+								{% endif %}
+							</a></li>
+						{% endfor %}
+						{% else %}
+							<li>No new notification</li>
+						{% endif %}	
+					</ul>
+				</li>
+				{% endif %}
+				{% if user.is_authenticated %}
+					<li><a href="{% url 'logout' %}">Logout</a></li>
+				{% else %}
+					<li><a href="{% url 'login' %}">Login</a></li>
+					<li><a href="{% url 'signup' %}">Signup</a></li>
+				{% endif %}
+			</ul>	
+		</div>
+		<div class="desktopContainer">
+			<slider >
+				<slide><img src="{% static 'image/slides/1.jpg' %}" width=100%></slide>
+				<slide><img src="{% static 'image/slides/2.jpg' %}"  width=100%></slide>
+				<slide><img src="{% static 'image/slides/3.jpg' %}"  width=100%></slide>
+				<slide><img src="{% static 'image/slides/4.jpg' %}" width=100%></slide>
+			</slider>
+			<div class="row">
+			<div class="col-md">
+			<div class="welcomeTextDesktop">
+				<div class="wow bounceInLeft " data-wow-duration="3000ms" data-wow-delay="-500ms"><h1>Recruitment Services</h1></div>
+				<div class="wow bounceInRight " data-wow-duration="3000ms" data-wow-delay="500ms" ><h2>Direct Recruitment</h2></div>
+				<div class="wow bounceInUp " data-wow-duration="3000ms" data-wow-delay="500ms"><h4>We work with you to define the important aspects of the position that needs to be filled. This forms the basis of all our recruitment efforts, care must be taken from both sides to make the resulting profile as accurate as possible without at the same time making it too limiting.</h4></div><br/>
+				<div class="wow fadeIn" data-wow-duration="3000ms" data-wow-delay="2000ms"><a href="#index.html"><span >Apply Now</span></a></div>
+			</div>
+			<div class="welcomeTextMobile">
+				<div class="wow bounceInLeft " data-wow-duration="3000ms" data-wow-delay="-500ms"><h3>Recruitment Services</h3></div>
+				<div class="wow bounceInRight " data-wow-duration="3000ms" data-wow-delay="500ms" ><h4>Direct Recruitment</h4></div>
+				<div class="wow bounceInUp " data-wow-duration="3000ms" data-wow-delay="500ms"><p>We work with you to define the important aspects of the position that needs to be filled. This forms the basis of all our recruitment efforts, care must be taken from both sides to make the resulting profile as accurate as possible without at the same time making it too limiting.</p></div><br/>
+				<div class="wow fadeIn" data-wow-duration="5000ms" data-wow-delay="1000ms"><a href="#index.html"><span>Apply Now</span></a></div>
+			</div>
+		</div>
+		</div>
+		{% if user.is_superuser %}
+		<a href="{% url 'netsalary' %}"><button style="float:right" class="btn btn-success">Salarysheet</button></a>
+		<a href="{% url 'change_key' user.id %}"><button style="float:right" class="btn btn-success">Change Key</button></a>
+		{% elif user.is_active and not user.is_staff %}
+		<a href="{% url 'staffsignup' user.id %}"><button style="float:right" class="btn btn-success">Signup as staff</button></a>
+		{% endif %}
+        	<div class="homeDescriptionDesktop wow fadeIn" data-wow-delay="200ms">
+        			<h1> Hi {{user.username}}
+   				,We Are Marigold Overseas</h1>
+					<br/>
+      				<p>We are a registered and authorized organization by the Government of Nepal, established as a Foreign Employment Consultant as well as Nepali Manpower supply company with the motto "We believe in hard work".
+					<br/><br/>				
+					The Marigold Overseas Pvt. Ltd. one of the leading manpower recruitment agency in Nepal, established in 2005 under the Government of Nepal Registration No. 38728/062/063 and Department of Foreign Employment, Government License No. 668/063/064.
+					<br/><br/>
+					The Marigold Overseas Pvt. Ltd. has dispatched thousands of professional (skilled, semi-skilled and unskilled) from Nepal to Qatar, UAE, Saudi Arabia, Kuwait, Malaysia and East Asia etc. Its highly qualified professional makes our clients get maximum output at minimum cost and effort. We The Himalayan HR is fully committed to the complete satisfaction of both, Our Prestigious clients as well as Job seekers who are desirous for overseas employment with a right & a better secure Future. We provide Overseas Placement for those looking forward to broaden their horizons and head for better career opportunities in the Middle East. We have our own well-equipped and modern offices, well-educated, experienced staff's and a wide network of operation in Kathmandu as well as many other associated offices in all the major cities of Nepal. We have never failed them in the past and will make it equally easy for them in future. We complete in the employment service industry by offering a complete range of recruitment service.
+					<br/><br/>
+					We always understand the needs of your business are complex and evolving, and we focus on developing and nurturing long-term, results-oriented partnerships. We provide trusted, consultative services by truly listening and responding to the needs of our client's, candidates and associates. We don't talk much, we believe in hard work only.
+					</p>
+			</div>
+			<div class="homeDescriptionMobile wow fadeIn" data-wow-delay="200ms">
+   					<h2>We Are Marigold Overseas</h2>
+					<br/>
+      				<h4>We are a registered and authorized organization by the Government of Nepal, established as a Foreign Employment Consultant as well as Nepali Manpower supply company with the motto "We believe in hard work".
+					<br/><br/>				
+					The Marigold Overseas Pvt. Ltd. one of the leading manpower recruitment agency in Nepal, established in 2005 under the Government of Nepal Registration No. 38728/062/063 and Department of Foreign Employment, Government License No. 668/063/064.
+					<br/><br/>
+					</h4>
+			</div>
+			<div class="homeDesktopSection1">
+				<div class="homeSection1-1">
+					<img src="{% static 'image/vision.png' %}" alt="vision" class="wow fadeInUp" data-wow-delay="400ms"/>
+					<h3 class="wow bounceInLeft" data-wow-delay="200ms">Vision</h3>
+					<p class="wow bounceInLeft" data-wow-delay="200ms">The supreme vision of our company is the fulﬁll the need of our clients seeking for “Right People for Right Job at Right Time”</p>
+				</div>
+				<div class="homeSection1-2">
+					<img src="{% static 'image/mission.png' %}" alt="mission" class="wow fadeInUp" data-wow-delay="400ms"/>
+					<h3 class="wow bounceInUp" data-wow-delay="200ms">Mission</h3>
+					<p class="wow bounceInUp" data-wow-delay="200ms">We believe that, in order to achieve success in business having the best group of employees is mandatory. We find happiness in receiving the credit for our client’s success. </p>
+				</div>
+				<div class="homeSection1-3">
+					<img src="{% static 'image/values.png' %}" alt="values" class="wow fadeInUp" data-wow-delay="400ms"/>
+					<h3 class="wow bounceInRight" data-wow-delay="200ms">Values</h3>
+					<p class="wow bounceInRight" data-wow-delay="200ms">The supreme vision of our company is the fulﬁll the need of our clients seeking for “Right People for Right Job at Right Time”</p>
+				</div>
+			</div>
+			<div class="homeMobileSection1">
+				<div class="homeMobileSection1-1">
+					<img src="{% static 'image/vision.png' %}" alt="vision" class="wow fadeInUp" data-wow-delay="400ms"/>
+					<h3 class="wow bounceInUp" data-wow-delay="200ms">Vision</h3>
+					<p class="wow bounceInUp" data-wow-delay="200ms">The supreme vision of our company is the fulﬁll the need of our clients seeking for “Right People for Right Job at Right Time”</p>
+				</div>
+				<div class="homeMobileSection1-2">
+					<img src="{% static 'image/mission.png' %}" alt="mission" class="wow fadeInUp" data-wow-delay="400ms"/>
+					<h3 class="wow bounceInUp" data-wow-delay="200ms">Mission</h3>
+					<p class="wow bounceInUp" data-wow-delay="200ms">The supreme vision of our company is the fulﬁll the need of our clients seeking for “Right People for Right Job at Right Time”</p>
+				</div>
+				<div class="homeMobileSection1-3">
+					<img src="{% static 'image/values.png' %}" alt="values" class="wow fadeInUp" data-wow-delay="400ms"/>
+					<h3 class="wow bounceInUp" data-wow-delay="200ms">Values</h3>
+					<p class="wow bounceInUp" data-wow-delay="200ms">The supreme vision of our company is the fulﬁll the need of our clients seeking for “Right People for Right Job at Right Time”</p>
+				</div>
+			</div>
+			<h2 align='center'><a href="jobs"> Jobs Available </a></h2>
+			 <div class="row" style='padding-left: 80px'>
+          {% for jobse in jobs %}
+        <div class="col-lg-3 portfolio-item" > 
+          <div class="card h-100">
+            <a href="#"><img class="card-img-top" src="{{jobse.image.url}}" alt="" height="200px"></a>
+            <div class="card-body">
+              <h4 class="card-title">
+                <a href="{% url 'details' jobse.id %}">Designation : {{jobse.title}}</a>
+              </h4>
+              <p class="card-text">Location : {{jobse.location}}<br> Salary: {{jobse.salary}} NPR
+              	</p>
+            </div>
+          </div> 
+        </div>
+        {% endfor %}
+              
+      </div>
+			<footer id="footerDesktop">
+              <div id="section-1">
+                <h3 ><span style="color: #3399cc">Marigold</span> Overseas</h3>
+                <span>"We believe in hard work"</span>
+              </div>
+              <div id="section-2">
+                <span>&copy; Copyright 2018 | Marigold Overseas</span>
+              </div>
+              <div id="section-3">
+         		<h3>Contact Us</h3>
+             	<div class="footer-img"><img src="{% static 'image/logo/location tag.png' %}" alt="location logo" /></div>
+                <span class="footer-text"> Sinamangal-9, Airport Kathmandu</span>
+               	<br/>
+               	<div class="footer-img"><img src="{% static 'image/logo/mail.png' %}" alt="mail logo" /></div>
+                <span class="footer-text">info@marigoldoverseas.com.np</span>
+                <br/>
+                <div class="footer-img"><img src="{% static 'image/logo/phone.png' %}" alt="phone logo" /></div>
+                <span class="footer-text"> +977- 14499122, 448281, 4485281</span>
+              </div>
+          </footer>
+      		<footer id="footerMobile">
+            	<div id="mobileSection-1">
+                	<h5 ><span style="color: #3399cc">Marigold</span> Overseas</h5>
+                 	<span class="footer-text">"We believe in hard work"</span>
+            	</div>
+           	 	<div id="mobileSection-2"><span>&copy; Copyright 2018 | Marigold Overseas</span></div>
+              	<div id="mobileSection-3">
+                	<h5>Contact Us</h5>
+                	<div class="footer-img"><img src="{% static 'image/logo/location tag.png' %}" alt="location logo" /></div>
+               		<span class="footer-text">Sinamangal-9, Airport Kathmandu</span>
+                	<br/>
+                	<div class="footer-img"><img src="{% static 'image/logo/mail.png' %}" alt="mail logo" /></div>
+				  	<span class="footer-text" >info@marigoldoverseas.com.np</span><br/>
+                	<div class="footer-img"><img src="{% static 'image/logo/phone.png' %}" alt="phone logo" /></div>
+                	<span class="footer-text"> +977-14499122, 448281, 4485281</span>
+             	</div>
+          	</footer>
+   		</div>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script src="{% static 'js/wow.min.js' %}"></script>
+        <script>
+			new WOW().init();
+        </script>
+	</body>
+</html>

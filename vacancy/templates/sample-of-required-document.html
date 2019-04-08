@@ -1,0 +1,141 @@
+{% load staticfiles %}
+<!DOCTYPE html land="en" >
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>About Us | Marigold Overseas PVT. LTD</title>
+		<link rel="shortcut icon" href="{% static 'image/logo/favicon.png' %}" type="image/png">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/style.css'%}">
+		<link rel="stylesheet" href="{% static 'css/animate.css'%}">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script
+  			src="https://code.jquery.com/jquery-3.3.1.js"
+  			integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  			crossorigin="anonymous">
+		</script>
+		<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+		<style>
+			*{
+   			 	margin:0px;
+    			padding:0px;
+ 			 }
+		</style>	
+	</head>
+	<body>
+		<div id="headerDesktop" class="wow fadeInDown text-uppercase">
+			<div class="home-logo"><a href="index.html"><img src="{% static 'image/logo/home-logo.png' %}" alt="home logo"/></a></div>
+        <li><a href="#company-profile.html">Company Profile</a>
+          <ul class="drop-menu">
+                  <li><a href = "introduction">Introduction</a></li>
+                  <li><a href = "message">Message From Chairman</a></li>
+                  <li><a href = "chart">Organization Chart</a></li>
+                </ul>
+        </li>
+        <li><a href="#for-employees.html">For Employees</a>
+        <ul class="drop-menu">
+                <li><a href = "whymarigold">Why Marigold</a></li>
+                <li><a href = "ourrecruitment">Our Recruitment</a></li>
+                <li><a href = "sector">Sector We Supply</a></li>
+                <li><a href = "sample">Required Document</a></li>
+              </ul>
+        </li>
+        <li><a href="jobs">Jobs</a></li>
+        <li><a href="contact.html">Contact US</a></li>
+        <li><a href="about.html">About US</a></li>
+      </ul> 
+    </div>
+    <div id="headerMobile" class="text-uppercase">
+      <div class="main-mobile-logo">
+        <a href="index.html"><img src="{% static 'image/logo/main-logo.png' %}" alt="main logo"/></a></div>
+      <div id="menu-toggler" class="text-capitalize">Menu</div>
+      <ul class="mobile-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#company-profile.html">Company Profile</a>
+          <ul class="mobile-drop">
+                  <li><a href = "introduction">Introduction</a></li>
+                  <li><a href = "message">Message From Chairman</a></li>
+                  <li><a href = "chart">Organization Chart</a></li>
+                </ul>
+        </li>
+        <li><a href="#for-employees.html">For Employees</a>
+        <ul class="mobile-drop">
+                <li><a href = "whymarigold">Why Marigold</a></li>
+                <li><a href = "ourrecruitment">Our Recruitment</a></li>
+                <li><a href = "sector">Sector We Supply</a></li>
+                <li><a href = "sample">Required Document</a></li>
+              </ul>
+        </li>
+        <li><a href="jobs">Jobs</a></li>
+        <li><a href="about">About</a></li>
+        <li><a href="contact">Contact</a></li>
+      </ul> 
+    </div>
+		<div class="desktopContainer">
+			<div class="container">
+				<div class="recruitmentSection1 text-justify">
+					<h1 class="whyMarigoldDesktopHeader wow fadeInUp"><strong>Required Documents</strong></h1>
+					<h2 class="whyMarigoldMobileHeader wow fadeInUp"><strong>Required Documents</strong></h2>
+					<h3>Legal Documents from Employer Company</h3>
+					<p>Requirements of legal documents varies country to country. Common to all are 5 legal documents as detailed below. These documents should be in Employer Company Letterhead, properly signed and stamped by company authority. These documents should get attested from Chamber of Commerce and/or Nepal Embassy of the respective country. In case of Saudi Arabia, attestation from Ministry of Foreign Affairs (MOFA) in addition is mandatory. For Malaysia, Notary Public Attestation and Nepal Embassy’s attestation needed.</p>
+					<h3>Demand Letter</h3>
+					<p>
+					A letter from the Employer Company mentioning number of workers required, salary scale, duty hours, food accommodation and other facilities provided.
+					</p>
+					<h3>Power of Attorney</h3>
+					<p>Authorizing our company to be a true and lawful attorney and agent in this country.</p>
+					<h3>Employment Contract</h3>
+					<p>Service Contract between the employer and the employee mentioning salary and benefits offered to the employee with detailed terms and conditions.</p>
+					<h3>Agency Agreement</h3>
+					<p>Commercial contract between the employer and our agency, duly signed and stamped by both parties.</p>
+					<h3>Guarantee Letter</h3>
+					<p>The Employer Company should address the Labor Department of Nepal regarding the demand requesting them for further permission from the Government of Nepal.<br/>
+					We will send you a sample legal documents set in your mail for your kind reference.</p>
+				</div>
+					<a href="{% static 'documents/sample-document.docx' %}"><button type="button" class="btn" style="margin-left: 10%">Download Sample Document</button></a>
+			</div>
+			<footer id="footerDesktop">
+              <div id="section-1">
+                <h3 ><span style="color: #3399cc">Marigold</span> Overseas</h3>
+                <span>"We believe in hard work"</span>
+              </div>
+              <div id="section-2">
+                <span>&copy; Copyright 2018 | Marigold Overseas</span>
+              </div>
+              <div id="section-3">
+         		<h3>Contact Us</h3>
+             	<div class="footer-img"><img src="{% static 'image/logo/location tag.png' %}" alt="location logo" /></div>
+                <span class="footer-text"> Sinamangal-9, Airport Kathmandu</span>
+               	<br/>
+               	<div class="footer-img"><img src="{% static 'image/logo/mail.png' %}" alt="mail logo" /></div>
+                <span class="footer-text">info@marigoldoverseas.com.np</span>
+                <br/>
+                <div class="footer-img"><img src="{% static 'image/logo/phone.png' %}" alt="phone logo" /></div>
+                <span class="footer-text"> +977- 14499122, 448281, 4485281</span>
+              </div>
+          </footer>
+      		<footer id="footerMobile">
+            	<div id="mobileSection-1">
+                	<h5 ><span style="color: #3399cc">Marigold</span> Overseas</h5>
+                 	<span class="footer-text">"We believe in hard work"</span>
+            	</div>
+           	 	<div id="mobileSection-2"><span>&copy; Copyright 2018 | Marigold Overseas</span></div>
+              	<div id="mobileSection-3">
+                	<h5>Contact Us</h5>
+                	<div class="footer-img"><img src="{% static 'image/logo/location tag.png' %}" alt="location logo" /></div>
+               		<span class="footer-text">Sinamangal-9, Airport Kathmandu</span>
+                	<br/>
+                	<div class="footer-img"><img src="{% static 'image/logo/mail.png' %}" alt="mail logo" /></div>
+				  	<span class="footer-text" >info@marigoldoverseas.com.np</span><br/>
+                	<div class="footer-img"><img src="{% static 'image/logo/phone.png' %}" alt="phone logo" /></div>
+                	<span class="footer-text"> +977-14499122, 448281, 4485281</span>
+             	</div>
+          	</footer>
+   		</div>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script src="{% static 'js/wow.min.js' %}"></script>
+        <script>
+			new WOW().init();
+        </script>
+	</body>
+</html>

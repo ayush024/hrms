@@ -1,0 +1,43 @@
+{% if user.is_superuser %}
+{% for employee in employees %}
+<h2>Name of employee:  {{employee.username}}</h2>
+<p>Monthly Salary:  {{employee.Salary}}
+<h3>For previous months</h3>
+<table class="table table-striped">
+  		<thead class="thead-dark">
+    		<tr>
+      		<th scope="col">No.</th>
+          <th scope="col">Year</th>
+      		<th scope="col">Month</th>
+      		<th scope="col">Leave taken</th>
+      		<th scope="col">Net Salary</th>
+    		</tr>
+  		</thead>
+  		<tbody>
+    		{% for item in employee.net_salary_set %}
+    		<tr>
+      		<th scope="row">{{forloop.counter}}</th>
+      		<td>{{item.year}}</td>
+      		<td>{{item.month}}</td>
+      		<td>{{item.leave_days}}</td>
+      		<td>{{item.netSal}}</td>
+    		</tr>
+    		{% endfor %}
+  		</tbody>
+	</table>
+  Total Salary till this date:  {{employee.TotalSalary}}
+
+  <h3>For current month</h3>
+  <p>Leave days:   {{employee.leave_taken}}</p>
+  <p>Net Salary(deducting leave days):  {{employee.net_salary_this_term}}
+  
+{% endfor %}  
+ 
+<form method="post" action="{% url 'netsalary' %}">
+{% csrf_token %}
+<input type="submit" value="Update">
+</form>
+
+{% else %}
+<p> Only superuser can view this page. </p>
+{% endif %}

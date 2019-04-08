@@ -1,0 +1,6 @@
+<form method="POST" action="{% url 'appstatus' %}">
+	{% csrf_token %}
+	<label>Enter your passport number </label>
+	<input type="text" name="number">
+	<input type="submit" value="submit">
+</form>	

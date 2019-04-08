@@ -1,0 +1,11 @@
+{% if user.is_staff %}
+<h3>Post new job</h3>
+<form method="POST" action="{% url 'postjob' %}" enctype="multipart/form-data">
+	{% csrf_token %}
+	{{form.as_p}}
+	
+	<input type="submit" value="Post job">
+</form>
+{% else %}
+<p>You require a staff account to access this form.</p>
+{% endif %}

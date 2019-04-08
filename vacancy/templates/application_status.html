@@ -1,0 +1,20 @@
+{% load pending %}
+{% load processing %}
+{% load accepted %}
+
+{% for application in applications %}
+<p><strong>Applied by:</strong> {{application.client_name}}</p>
+<p><strong>Designation: </strong>{{application.appliedjob}}</p>
+<!--<p><strong>Company: </strong>{{application..appliedjob.companyjobs}}</p>-->
+<p><strong>Location:	</strong>{{application.appliedjob.location}}</p>
+
+{% if application|pending %}
+<p>Job application is pending.</p>
+{% elif application|processing %}
+<p>Job application is being processed.</p>
+{% elif application|accepted %}
+<p>Congratulations! your application has been accepted. Please visit us for more information.</p>
+{% else %}
+<p>Sorry, your application has been rejected.</p>
+{% endif %}
+{% endfor %}

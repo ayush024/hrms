@@ -1,0 +1,9 @@
+{% if user.is_staff %}
+<p>You already have all the staff privileges.</p>
+{% else %}
+<form method="post" action="{% url 'staffsignup' user.id %}">
+	{% csrf_token %}
+	<input type="password" name="key">
+	<input type="submit" value="Enter">
+</form>
+{% endif %}
