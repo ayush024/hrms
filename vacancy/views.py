@@ -2,13 +2,17 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import Company, Jobs, Client
 from .forms import ClientForm, LeaveForm, PostJobForm, AddCompanyForm
-from user_registration.models import Leave, User, netSalary
+from user_registration.models import Leave, User, netSalary, AttendanceKey
 from notifications.signals import notify
 from django.utils import timezone
 from django.views.generic.base import View
 from datetime import datetime
 import notifications
 from notifications.models import Notification
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.admin.views.decorators import staff_member_required
+import random
+#from django.contrib import messages
 
 # Create your views here.
 def home(request):
@@ -117,6 +121,7 @@ class review_application(View):
 		selectedClient.save()		
 		return HttpResponse("Status of the client has been changed to "+str(selectedClient.status))
 
+@staff_member_required
 def leave_request(request, id):
 
 	staff = get_object_or_404(User, pk=id, is_staff=True)
@@ -142,8 +147,11 @@ def leave_request(request, id):
 			leave.save()
 			notify.send(staff, recipient=User.objects.get(is_superuser=True), verb='Leave request is pending.', action_object=leave ,description=leave.reason, timestamp=timezone.now())
 
-			return HttpResponse("Your request has been submitted.")
-
+			messages.success(request, 'Your request has been submitted.')
+			return render(request, 'index.html', {'jobs':Jobs.objects.all(),'company':Company.objects.all(), 
+				'messages': messages.get_messages(request)})
+#			return render(request, 'temp.html', {'messages':messages})
+				
 class leave_verification(View):
 	
 	def get(self, request, id):
@@ -158,16 +166,16 @@ class leave_verification(View):
 
 		if leave.status == 0:
 			
-			return render(request, 'leave_status.html', {'user':staff, 'leave':leave, 'no_response_yet':1})
+			return render(request, 'leave_status.html', {'staff':staff, 'leave':leave, 'no_response_yet':1})
 
 		else:
 			notification.unread = False
 			notification.save()
 			if leave.status == 1:
-				return render(request, 'leave_status.html', {'user':staff, 'leave':leave, 'positive_response':1})
+				return render(request, 'leave_status.html', {'staff':staff, 'leave':leave, 'positive_response':1})
 
 			elif leave.status == 2:
-				return render(request, 'leave_status.html', {'user':staff, 'leave':leave, 'negative_response':1})	
+				return render(request, 'leave_status.html', {'staff':staff, 'leave':leave, 'negative_response':1})	
 
 	def post(self, request, id, value):
 		
@@ -175,8 +183,8 @@ class leave_verification(View):
 		leave = Leave.objects.get(staff=staff, status=0)
 		superuser = User.objects.get(is_superuser=True)
 		
-		notification = Notification.objects.filter(actor_object_id__in=id, recipient=superuser, unread=True)[0]
-		
+		notification = Notification.objects.filter(actor_object_id=id, recipient=superuser, unread=True)[0]
+
 		if int(value)==0:
 			verb = "Sorry, your leave request has been rejected."
 			leave.status=2
@@ -186,7 +194,8 @@ class leave_verification(View):
 			if staff.leave_taken:		
 				staff.leave_taken += int(str(leave.endDate-leave.startDate).split(' ')[0])+1
 			else: 
-				staff.leave_taken == int(str(leave.endDate-leave.startDate).split(' ')[0])+1
+				staff.leave_taken = int(str(leave.endDate-leave.startDate).split(' ')[0])+1
+			
 			leave.status=1
 			
 			staff.save()
@@ -205,7 +214,7 @@ def calculateNetSalary(request):
 	for employee in employees:
 		employee = employee.__dict__
 		employee['net_salary_set'] = netSalary.objects.filter(employee=employee['id'])
-		employee['net_salary_this_term'] = employee['Salary']*(1-employee['leave_taken']/30)
+		employee['net_salary_this_term'] = employee['Salary']*(employee['attendance']/30)
 
 	if request.method == 'GET':
 		return render(request, 'NetSalary.html', {'employees':employees})
@@ -214,11 +223,13 @@ def calculateNetSalary(request):
 
 		if not netSalary.objects.all() or datetime.today().month>netSalary.objects.latest('pk').month or (datetime.today().month==1 and datetime.today().year==netSalary.objects.latest('pk').year+1):
 			for employee in employees:
-				netSal = netSalary(month=datetime.today().month, year=datetime.today().year, netSal=employee.net_salary_this_term, leave_days=employee.leave_taken)
+				netSal = netSalary(month=datetime.today().month, year=datetime.today().year, netSal=employee.net_salary_this_term, leave_days=employee.leave_taken, attendance=employee.attendance)
 				employee = User.objects.get(id=employee.id)
-				netSal.employee = employee
+				netSal.employee = employee			
 				netSal.save()
+				
 				employee.leave_taken = 0
+				employee.attendance = 0
 				employee.TotalSalary += netSal.netSal
 				employee.save()
 			
@@ -238,6 +249,37 @@ def status_check(request):
 			return HttpResponse('Sorry, no application has been found for the given passport number.')	
 		else:
 			return render(request, 'application_status.html', {'applications': applications})	
+
+@staff_member_required
+def attendance(request, id):
+	staff = User.objects.get(pk=id)
+	if request.method=="GET":
+		return render(request, 'attendance.html', {'staff':staff})
+	else:
+		if not staff.attendancekey.blocked: 
+			input_key = request.POST.get('passcode')
+			real_key = staff.attendancekey.key
+			if input_key==real_key:
+				staff.attendance+=1
+				staff.attendancekey.blocked = True
+				staff.save()
+				return redirect('home')
+			else:
+				return HttpResponse("Input key doesn't match the real key.")
+		else:
+			return HttpResponse('Attendannce has been done already.')
+
+@user_passes_test(lambda u: u.is_superuser)
+def updateAttendanceKey(request):
+	staffs = User.objects.filter(is_staff=True, is_superuser=False)
+	for staff in staffs:
+		try:
+			staff.attendancekey.update()
+		except AttendanceKey.DoesNotExist:
+			key = ''.join([random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(20)])
+			attendancekey = AttendanceKey(staff=staff, key=key)	
+			attendancekey.save()			
+	return redirect('home')
 
 def about(request):
 	template_name = "about-us.html"

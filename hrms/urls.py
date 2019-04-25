@@ -37,6 +37,9 @@ urlpatterns = [
     url(r'^application/details/(?P<id>[0-9]+)/$', review_application.as_view(), name='specific_app'),
     path('application/<id>/value/<value>', review_application.as_view(), name='process'),
     path('application/statuscheck/', status_check, name='appstatus' ),
+    path('attendance/<id>', attendance, name='attendance'),
+    path('attendanceKey/changing', updateAttendanceKey, name='updatekey'),
     url(r'^notifications/', include(notifications.urls, namespace='notifications')),
+
 
 ]+ static(settings.STATIC_URL,document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

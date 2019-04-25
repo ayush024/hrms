@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone as tz
+import random
 
 class UserManager(BaseUserManager):
 
@@ -76,6 +77,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 	leave_taken = models.IntegerField(default=None, blank=True, null=True)
 	#For staffs only, total salary given to a staff
 	TotalSalary = models.FloatField(default=None, blank=True, null=True)
+	#For staff account only, attendance at current month
+	attendance = models.IntegerField(default=0)
 
 	last_login =  models.DateTimeField(_('last_login'), auto_now_add=False, auto_now=False, null=True)
 
@@ -111,8 +114,8 @@ class Leave(models.Model):
 
 	status = models.IntegerField(default=0)
 	reason = models.CharField(max_length=500)
-	startDate = models.DateField(default = tz.now().today())
-	endDate = models.DateField(default = tz.now().today())
+	startDate = models.DateField(default = tz.now().date())
+	endDate = models.DateField(default = tz.now().date())
 
 class netSalary(models.Model):
 	employee = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -120,8 +123,21 @@ class netSalary(models.Model):
 	month = models.IntegerField(default=1)
 	#Leave taken at given month
 	leave_days = models.IntegerField(default=0)
+	#Attendance at given month
+	attendance = models.IntegerField(default=0)
 	netSal = models.FloatField(default=0)
 
 class employeeKey(models.Model):
 	key = models.CharField(max_length=55)
 	created_at = models.DateField(auto_now_add=True)
+
+class AttendanceKey(models.Model):
+	staff = models.OneToOneField(User, on_delete=models.CASCADE)
+	key = models.CharField(max_length=20)
+	date = models.DateField(auto_now=True)
+	blocked = models.BooleanField(default=False)
+ 
+	def update(self):
+		self.key = ''.join([random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(20)])
+		self.blocked = False
+		self.save()

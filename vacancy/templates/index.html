@@ -23,6 +23,24 @@
 		</style>	
 	</head>
 	<body>
+		{% if messages %} 
+			{% for message in messages %}
+					<p>{{message}}</p> 
+					<button id="close">OK</button> 
+							
+			{% endfor %}
+		{% else %}
+		<p>No messages.</p>
+<!--			<script>
+				var dialog = document.querySelector('dialog'); 
+				document.querySelector('#show').onclick = function() { 
+					dialog.show(); 
+				}; 
+				document.querySelector('#close').onclick = function() { 
+					dialog.close(); 
+				}; 
+			</script> -->
+		{% endif %} 
 		<div id="headerDesktop" class="wow fadeInDown text-uppercase">
 			<div class="main-logo">
 				<a href="{% url 'home' %}"><img src="{% static 'image/logo/main-logo.png' %}" alt="main logo"/></a>
@@ -172,9 +190,12 @@
 		</div>
 		{% if user.is_superuser %}
 		<a href="{% url 'netsalary' %}"><button style="float:right" class="btn btn-success">Salarysheet</button></a>
-		<a href="{% url 'change_key' user.id %}"><button style="float:right" class="btn btn-success">Change Key</button></a>
+		<a href="{% url 'change_key' %}"><button style="float:right" class="btn btn-success">Change Key</button></a>
+		<a href="{% url 'updatekey' %}"><button style="float:right" class="btn btn-success">Update attendance key</button></a>
 		{% elif user.is_active and not user.is_staff %}
 		<a href="{% url 'staffsignup' user.id %}"><button style="float:right" class="btn btn-success">Signup as staff</button></a>
+		{% elif user.is_staff and not user.is_superuser %}
+		<a href="{% url 'attendance' user.id %}"><button style="float:right" class="btn btn-success">Attendance</button></a> 
 		{% endif %}
         	<div class="homeDescriptionDesktop wow fadeIn" data-wow-delay="200ms">
         			<h1> Hi {{user.username}}

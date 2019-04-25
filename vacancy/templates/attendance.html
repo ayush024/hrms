@@ -1,0 +1,7 @@
+<h4>Welcome {{staff.username}}</h4>
+<form method='post' action=''>
+	{% csrf_token %}
+	<label>Enter passcode:</label>
+	<input type='text' name='passcode' required>
+	<input type='submit' value='Enter'>
+</form>

@@ -13,7 +13,7 @@ urlpatterns = [
     re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
             activate, name='activate'),
     path('signup_as_staff/user/<id>', StaffSignupView, name='staffsignup'),
-    path('change_key/superuser/<id>', createKey, name='change_key'),
+    path('change_key/', createKey, name='change_key'),
     path('random_keygen/', generate, name='generate'),
 ]
 

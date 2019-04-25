@@ -12,6 +12,7 @@ from .models import User, UserProfile, employeeKey
 from .forms import UserSignupForm, UserLoginForm
 from django.conf import settings
 from django.template.loader import render_to_string
+from django.contrib.auth.decorators import user_passes_test, login_required
 from datetime import datetime
 import random
 import os
@@ -121,44 +122,37 @@ class UserLoginView(View):
 		messages.error(request,'Login Failed! Please Try Again...')
 		return render(request, self.template_name, {'form':form})
 
+@login_required
 def StaffSignupView(request, id):
-	user = User.objects.get(pk=id) 
-	if not user.is_active:
-		return HttpResponse("You must signin with a user account before signing up as staff.")
+	if request.method=="GET":
+		return render(request, 'staffsignup.html')
+
 	else:
-		if request.method=="GET":
-			return render(request, 'staffsignup.html')
+		key = request.POST.get('key')
+		latest_key = employeeKey.objects.last()
+		if key==latest_key.key:
+			user.is_staff = True
+			user.Salary = 0
+			user.leave_taken = 0
+			user.TotalSalary = 0
+			user.attendance = 0
+			user.save()
+
+			return HttpResponse("Thankyou for using staff account. You can start using your account by going back and refreshing.")
 
 		else:
-			key = request.POST.get('key')
-			latest_key = employeeKey.objects.last()
-			if key==latest_key.key:
-				user.is_staff = True
-				user.Salary = 0
-				user.leave_taken = 0
-				user.TotalSalary = 0
+			return HttpResponse("Sorry, key doesn't match")
 
-				user.save()
-
-				return HttpResponse("Thankyou for using staff account. You can start using your account by going back and refreshing.")
-			else:
-				return HttpResponse("Sorry, key doesn't match")
-
-def createKey(request, id):
-	user = User.objects.get(pk=id)
-	
-	if not user.is_superuser:
-		return HttpResponse("Access denied")
-	
+@user_passes_test(lambda u: u.is_superuser)
+def createKey(request):
+	if request.method=="GET":
+		current_key = employeeKey.objects.last()
+		return render(request, 'change_key.html', {'current_key':current_key})
 	else:
-		if request.method=="GET":
-			current_key = employeeKey.objects.last()
-			return render(request, 'change_key.html', {'current_key':current_key})
-		else:
-			key = request.POST.get('key')
-			new_key = employeeKey(key=key)
-			new_key.save()
-			return HttpResponse("StaffSignup key has been changed successfully")
+		key = request.POST.get('key')
+		new_key = employeeKey(key=key)
+		new_key.save()
+		return HttpResponse("StaffSignup key has been changed successfully")
 
 def generate(request):
 	if request.method=="POST":
